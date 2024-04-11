@@ -18,13 +18,12 @@ def exchange_rate_data_get():
     return requests.get("https://open.er-api.com/v6/latest/JPY").json()["rates"]["KRW"]
 
 
-@app.command()
-def main(file: Annotated[Path, typer.Argument(help="Excel 파일 경로")]):
+@app.command(help="환율 계산기")
+def main(file: Annotated[Path, typer.Argument(help="Excel 파일 경로")], snack: Annotated[bool, typer.Option(help="과자 계산용")]):
     count = 3
     print("Reading Excel file...")
     wb = openpyxl.load_workbook(file)
     sheet = wb.get_sheet_by_name(wb.sheetnames.pop(0))
-    # sheet.cell(row=1, column=1).value
     for row in sheet.iter_rows(values_only=True):
         excel_list.append(row)
     print("Reading Excel file is done.")
@@ -42,7 +41,7 @@ def main(file: Annotated[Path, typer.Argument(help="Excel 파일 경로")]):
         JPY_to_KRW = round(JPY * exchange_rate)
 
         sheet = wb.get_sheet_by_name(wb.sheetnames.pop(1))
-        sheet.cell(row=count, column=1).value = i[0]
+        sheet.cell(row=count, column=1).value = name
         sheet.cell(row=count, column=1).style = "main"
 
         sheet.cell(row=count, column=2).value = KRW
@@ -54,7 +53,7 @@ def main(file: Annotated[Path, typer.Argument(help="Excel 파일 경로")]):
         sheet.cell(row=count, column=3).number_format = f_KRW_sing
 
         sheet = wb.get_sheet_by_name(wb.sheetnames.pop(2))
-        sheet.cell(row=count, column=1).value = i[0]
+        sheet.cell(row=count, column=1).value = name
         sheet.cell(row=count, column=1).style = "main"
 
         if i[1] - JPY_to_KRW < 0:
