@@ -10,5 +10,9 @@
    <br />또는
    - [실행파일 다운로드](https://github.com/wegotoajapan/hwanyulgyesangi/releases/latest) 후 `.\hwanyulgyesangi.exe {엑셀 파일 이름}`
 
+3. 완료!
+![img_1.png](img_1.png)
+![img_2.png](img_2.png)
+
 ## 과자 계산
 SOON™️
