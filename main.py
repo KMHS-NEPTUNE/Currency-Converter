@@ -14,12 +14,12 @@ excel_list = []
 f_KRW_sing = '_-[$₩-ko-KR]* #,##0.00_-;-[$₩-ko-KR]* #,##0.00_-;_-[$₩-ko-KR]* "-"??_-;_-@_-'
 f_percent = '0.##"%"'
 
+
 def exchange_rate_data_get():
     return requests.get("https://open.er-api.com/v6/latest/JPY").json()["rates"]["KRW"]
 
 
-@app.command(help="환율 계산기")
-def main(file: Annotated[Path, typer.Argument(help="Excel 파일 경로")], snack: Annotated[bool, typer.Option(help="과자 계산용")]):
+def excel_exchange(file: Path):
     count = 3
     print("Reading Excel file...")
     wb = openpyxl.load_workbook(file)
@@ -77,6 +77,19 @@ def main(file: Annotated[Path, typer.Argument(help="Excel 파일 경로")], snac
         count += 1
 
     wb.save(file)
+
+
+def excel_snack(file: Path):
+    pass
+
+@app.command(help="환율 계산기")
+def main(file: Annotated[Path, typer.Argument(help="Excel 파일 경로")],
+         snack: Annotated[bool, typer.Option(help="과자 계산용")] = False):
+    print(snack)
+    if snack:
+        excel_snack(file)
+    else:
+        excel_exchange(file)
 
 
 if __name__ == "__main__":
