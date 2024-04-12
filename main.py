@@ -79,16 +79,17 @@ def excel_exchange(file: Path):
     wb.save(file)
 
 
-def excel_snack():
-
+def excel_snack(file: Path):
+    pass
 
 @app.command(help="환율 계산기")
 def main(file: Annotated[Path, typer.Argument(help="Excel 파일 경로")],
-         snack: Annotated[bool, typer.Option(help="과자 계산용")]):
+         snack: Annotated[bool, typer.Option(help="과자 계산용")] = False):
+    print(snack)
     if snack:
-        excel_exchange(file)
+        excel_snack(file)
     else:
-
+        excel_exchange(file)
 
 
 if __name__ == "__main__":
