@@ -1,0 +1,4 @@
+﻿openpyxl
+typer
+requests
+typing_extensions
