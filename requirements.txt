@@ -1,4 +1,4 @@
 ﻿openpyxl
-typer
 requests
-typing_extensions
+aiofiles
+fastapi

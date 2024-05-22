@@ -4,8 +4,7 @@ import openpyxl
 import requests
 import warnings
 import io
-
-from typing_extensions import Annotated
+from fastapi.responses import FileResponse
 
 warnings.filterwarnings(action='ignore')
 
@@ -18,8 +17,7 @@ def exchange_rate_data_get():
     return requests.get("https://open.er-api.com/v6/latest/JPY").json()["rates"]["KRW"]
 
 
-def excel_exchange(file: any):
-    file_save = io.BytesIO
+def excel_exchange(file: io.BytesIO):
     count = 3
     print("Reading Excel file...")
     wb = openpyxl.load_workbook(file)
@@ -76,8 +74,10 @@ def excel_exchange(file: any):
 
         count += 1
 
-    return wb.save(file_save)
-
+    data = io.BytesIO()
+    wb.save(data)
+    data.seek(0)
+    return data
 
 def excel_snack(file: Path):
     print(file)

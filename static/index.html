@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en" xml:lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>FileFlower</title>
+		<link rel="shortcut icon" href="https://fastapi.tiangolo.com/img/favicon.png">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="style.css">
+		<script>
+			function update() {
+				document.getElementById("status").innerHTML = "Please upload your Excel file!";
+			}
+		</script>
+  	</head>
+
+	<body onload="update();">
+		<div class="_">
+			<div class="main" id="main">
+				<h1><span id="status"></span></h1>
+				<h2><span id="url" class="url"></span></h2>
+			</div>
+			<form name="uploadForm" method=post enctype=multipart/form-data>
+				<div class="label">
+					<label for="file">
+						<div class="btn-upload">올릴 파일 선택</div>
+						<input
+						class="upload"
+						id="file"
+						type="file"
+						name="myFiles"
+						accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+						/>
+					</label>
+					<label for="submit">
+						<div class="btn-upload">선택 파일 올리기</div>
+						<button id="submit" type="submit">Send file</button>
+					</label>
+				</div>
+			</form>
+			<footer>Email: admin@textcord.xyz</footer>
+		</div>
+	</body>
+
+  	<script>
+		const form = document.querySelector('form');
+
+		form.addEventListener('submit', async (e) => {
+			e.preventDefault();
+
+			const fileList = document.getElementById("file").files;
+			const formData = new FormData();
+
+			for (let i = 0; i < fileList.length; i++) {
+				formData.append("file", fileList[i], fileList[i].name);
+			}
+
+			document.getElementById("status").innerHTML = "Uploading...";
+			await FileUpload(formData);
+		});
+
+		async function FileUpload(file) {
+			let response;
+			try{
+				response = await fetch("/exchange", {
+					method: "POST",
+					body: file,
+				});
+			} catch (error) {
+				document.getElementById("status").innerHTML = "Upload failed";
+			}
+
+			if (response.ok) {
+				// 	response 받은 파일을 blob로 사용자에게 다운로드 시키기
+				const blob = await response.blob();
+				const file_name = response.headers.get("Content-Disposition").split("filename=")[1];
+				const url = URL.createObjectURL(blob);
+				document.getElementById("url").innerHTML = `<a href="${url}" download="${file_name}">Download</a>`;
+				document.getElementById("status").innerHTML = "Upload complete";
+			}
+		}
+  	</script>
+</html>
