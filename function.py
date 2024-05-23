@@ -34,8 +34,8 @@ def excel_exchange(file: io.BytesIO):
         elif i == excel_list[1]:
             continue
         name = i[0]
-        krw = round(i[1])
-        jpy = round(i[2])
+        krw = round(int(i[1]))
+        jpy = round(int(i[2]))
         jpy_to_krw = round(jpy * exchange_rate)
 
         sheet = wb.get_sheet_by_name(wb.sheetnames.pop(1))
