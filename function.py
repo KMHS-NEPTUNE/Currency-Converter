@@ -79,5 +79,6 @@ def excel_exchange(file: io.BytesIO):
     data.seek(0)
     return data
 
+
 def excel_snack(file: Path):
     print(file)
