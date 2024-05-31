@@ -4,7 +4,8 @@ import openpyxl
 import requests
 import warnings
 import io
-from fastapi.responses import FileResponse
+
+from openpyxl.chart import BarChart3D, Reference
 
 warnings.filterwarnings(action='ignore')
 
@@ -74,9 +75,24 @@ def excel_exchange(file: io.BytesIO):
 
         count += 1
 
+    chart = BarChart3D()
+    chart.type = "col"
+    chart.style = 10
+    data = Reference(sheet, min_col=3, min_row=2, max_col=3, max_row=len(excel_list))
+    categories = Reference(sheet, min_col=1, min_row=3, max_row=len(excel_list))
+    chart.add_data(data, titles_from_data=True)
+    chart.set_categories(categories)
+    chart.title = "한국과 일본의 물가 차이"
+    chart.x_axis.title = "품목"
+    chart.y_axis.title = "물가 차이(%)"
+    chart.legend = None
+    chart.y_axis.number_format = f_percent
+    sheet.add_chart(chart, "E5")
+
     data = io.BytesIO()
     wb.save(data)
     data.seek(0)
+
     return data
 
 

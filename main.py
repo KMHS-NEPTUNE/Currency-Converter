@@ -8,8 +8,9 @@ from starlette.responses import FileResponse
 
 import function
 
-app = FastAPI(title="test", version="0.0.1", description="ghksdbfrPtksrl", debug=True)
+app = FastAPI(title="C$C", version="2.0.1", description="Currency$Converter", debug=True)
 
+# noinspection PyTypeChecker
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
