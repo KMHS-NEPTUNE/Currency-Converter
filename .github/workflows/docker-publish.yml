@@ -37,6 +37,9 @@ jobs:
       - name: Checkout repository
       - uses: actions/checkout@v4
       - uses: uraimo/run-on-arch-action@v2
+      - with:
+          arch: aarch64
+          distro: ubuntu_latest
 
       # Install the cosign tool except on PR
       # https://github.com/sigstore/cosign-installer
