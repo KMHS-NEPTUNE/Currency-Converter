@@ -1,5 +1,5 @@
 # Use alpine linux as base image
-FROM alpine:latest
+FROM arm64v8/alpine:latest
 
 # Set environment variables for configuration
 ENV APP_HOME /app
