@@ -1,4 +1,4 @@
-# hwanyulgyesangi
+# Currency$Converter (C$C)
 - 맴버
     - 신윤재(10715)
     - 박상진(10707)
@@ -10,7 +10,7 @@
 ## [사용방법](docs/use.md)
 
 ## 사이트 소스코드
-[소스코드](https://github.com/wegotoajapan/hwanyulgyesangi/tree/server)
+[소스코드](https://github.com/KMHS-NEPTUNE/Currency-Converter/tree/server)
 
 ### TODO
 | 할일                          |        상태        |
