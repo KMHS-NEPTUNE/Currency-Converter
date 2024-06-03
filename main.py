@@ -1,14 +1,16 @@
 from pathlib import Path
+from openpyxl.chart import *
 
 import openpyxl
 import typer
 import requests
 import warnings
 
+from openpyxl.drawing.text import ParagraphProperties
 from typing_extensions import Annotated
 
 warnings.filterwarnings(action='ignore')
-app = typer.Typer(name="hwanyulgyesangi")
+app = typer.Typer(name="C$C", help="환율 계산기")
 
 excel_list = []
 f_KRW_sing = '_-[$₩-ko-KR]* #,##0.00_-;-[$₩-ko-KR]* #,##0.00_-;_-[$₩-ko-KR]* "-"??_-;_-@_-'
@@ -56,25 +58,29 @@ def excel_exchange(file: Path):
         sheet.cell(row=count, column=1).value = name
         sheet.cell(row=count, column=1).style = "main"
 
-        if i[1] - jpy_to_krw < 0:
-            sheet.cell(row=count, column=2).value = (krw - jpy_to_krw) * -1
-            sheet.cell(row=count, column=2).style = "main"
-            sheet.cell(row=count, column=2).number_format = f_KRW_sing
-        else:
-            sheet.cell(row=count, column=2).value = krw - jpy_to_krw
-            sheet.cell(row=count, column=2).style = "main"
-            sheet.cell(row=count, column=2).number_format = f_KRW_sing
+        sheet.cell(row=count, column=2).value = krw - jpy_to_krw
+        sheet.cell(row=count, column=2).style = "main"
+        sheet.cell(row=count, column=2).number_format = f_KRW_sing
 
-        if (i[1] - jpy_to_krw) / i[1] * 100 < 0:
-            sheet.cell(row=count, column=3).value = round((i[1] - jpy_to_krw) / i[1] * 100 * -1, 2)
-            sheet.cell(row=count, column=3).style = "percent"
-            sheet.cell(row=count, column=3).number_format = f_percent
-        else:
-            sheet.cell(row=count, column=3).value = round((i[1] - jpy_to_krw) / i[1] * 100, 2)
-            sheet.cell(row=count, column=3).style = "percent"
-            sheet.cell(row=count, column=3).number_format = f_percent
+        sheet.cell(row=count, column=3).value = round((i[1] - jpy_to_krw) / i[1] * 100, 2)
+        sheet.cell(row=count, column=3).style = "percent"
+        sheet.cell(row=count, column=3).number_format = f_percent
 
         count += 1
+
+    chart = BarChart3D()
+    chart.type = "col"
+    chart.style = 10
+    data = Reference(sheet, min_col=3, min_row=2, max_col=3, max_row=len(excel_list))
+    categories = Reference(sheet, min_col=1, min_row=3, max_row=len(excel_list))
+    chart.add_data(data, titles_from_data=True)
+    chart.set_categories(categories)
+    chart.title = "한국과 일본의 물가 차이"
+    chart.x_axis.title = "품목"
+    chart.y_axis.title = "물가 차이(%)"
+    chart.legend = None
+    chart.y_axis.number_format = f_percent
+    sheet.add_chart(chart, "E5")
 
     wb.save(file)
 
