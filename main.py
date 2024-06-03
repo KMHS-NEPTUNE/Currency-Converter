@@ -6,11 +6,10 @@ import typer
 import requests
 import warnings
 
-from openpyxl.drawing.text import ParagraphProperties
 from typing_extensions import Annotated
 
 warnings.filterwarnings(action='ignore')
-app = typer.Typer(name="C$C", help="Currency$Converter")
+app = typer.Typer(name="hwanyulgyesangi")
 
 excel_list = []
 f_KRW_sing = '_-[$₩-ko-KR]* #,##0.00_-;-[$₩-ko-KR]* #,##0.00_-;_-[$₩-ko-KR]* "-"??_-;_-@_-'
