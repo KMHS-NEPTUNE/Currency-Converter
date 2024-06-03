@@ -6,7 +6,6 @@ import typer
 import requests
 import warnings
 
-from openpyxl.drawing.text import ParagraphProperties
 from typing_extensions import Annotated
 
 warnings.filterwarnings(action='ignore')
